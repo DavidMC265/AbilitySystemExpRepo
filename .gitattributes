@@ -1,0 +1,16 @@
+# Unreal Engine file types.
+*.uasset filter=lfs diff=lfs merge=lfs -text
+*.umap filter=lfs diff=lfs merge=lfs -text
+
+# Raw Content file types.
+*.fbx filter=lfs diff=lfs metge=lfs -text
+*.3ds filter=lfs diff=lfs metge=lfs -text
+*.psd filter=lfs diff=lfs metge=lfs -text
+*.png filter=lfs diff=lfs metge=lfs -text
+*.mp3 filter=lfs diff=lfs metge=lfs -text
+*.wav filter=lfs diff=lfs metge=lfs -text
+*.xcf filter=lfs diff=lfs metge=lfs -text
+*.jpg filter=lfs diff=lfs metge=lfs -text
+
+# Anything in /RawContent dir.
+/RawContent/**/*filter=lfs diff=lfs merge=lfs -text
