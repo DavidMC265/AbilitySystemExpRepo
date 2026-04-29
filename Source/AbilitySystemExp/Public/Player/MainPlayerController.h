@@ -7,6 +7,7 @@
 class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
+struct FGameplayTag;
 
 UCLASS()
 class ABILITYSYSTEMEXP_API AMainPlayerController : public APlayerController
@@ -32,10 +33,20 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Abilities")
 	TObjectPtr<UInputAction> PrimaryAction;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Abilities")
+	TObjectPtr<UInputAction> SecondaryAction;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Abilities")
+	TObjectPtr<UInputAction> TertiaryAction;
+
 	void Jump();
 	void StopJumping();
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 
 	void Primary();
+	void Secondary();
+	void Tertiary();
+
+	void ActivateAbility(const FGameplayTag& AbilityTag) const;
 };

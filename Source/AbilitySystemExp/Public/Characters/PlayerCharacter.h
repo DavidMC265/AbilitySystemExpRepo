@@ -6,6 +6,7 @@
 
 class USpringArmComponent;
 class UCameraComponent;
+class UAbilitySystemComponent;
 
 UCLASS()
 class ABILITYSYSTEMEXP_API APlayerCharacter : public ABaseCharacter
@@ -14,6 +15,9 @@ class ABILITYSYSTEMEXP_API APlayerCharacter : public ABaseCharacter
 
 public:
 	APlayerCharacter();
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override; //overriden from parent class
+	virtual void PossessedBy(AController* NewController) override;
+	virtual void OnRep_PlayerState() override;
 
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Camera")

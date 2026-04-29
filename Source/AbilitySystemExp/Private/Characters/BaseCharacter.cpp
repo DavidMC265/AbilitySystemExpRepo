@@ -1,4 +1,5 @@
 #include "Characters/BaseCharacter.h"
+#include "AbilitySystemComponent.h"
 
 ABaseCharacter::ABaseCharacter()
 {
@@ -8,3 +9,18 @@ ABaseCharacter::ABaseCharacter()
 	GetMesh()->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
 }
 
+UAbilitySystemComponent* ABaseCharacter::GetAbilitySystemComponent() const
+{
+	return nullptr;
+}
+
+void ABaseCharacter::GiveStartupAbilites()
+{
+	if (!IsValid(GetAbilitySystemComponent())) return;
+
+	for (const auto& Ability : StartupAbilities)
+	{
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Ability);
+		GetAbilitySystemComponent()->GiveAbility(AbilitySpec);
+	}
+}

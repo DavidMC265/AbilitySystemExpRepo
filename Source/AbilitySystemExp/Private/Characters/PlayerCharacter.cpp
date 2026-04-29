@@ -3,6 +3,9 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Player/MainPlayerState.h"
+#include "AbilitySystemComponent.h"
+
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -32,4 +35,31 @@ APlayerCharacter::APlayerCharacter()
     FollowCamera = CreateDefaultSubobject<UCameraComponent>("FollowCamera");
     FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
     FollowCamera->bUsePawnControlRotation = false;
+}
+
+UAbilitySystemComponent* APlayerCharacter::GetAbilitySystemComponent() const
+{
+    AMainPlayerState* MainPlayerState = Cast<AMainPlayerState>(GetPlayerState());
+    if (!IsValid(MainPlayerState)) return nullptr;
+
+    return MainPlayerState->GetAbilitySystemComponent();
+}
+
+void APlayerCharacter::PossessedBy(AController* NewController)
+{
+   Super::PossessedBy(NewController);
+   
+   if (!IsValid(GetAbilitySystemComponent()) || !HasAuthority()) return;
+
+   GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this); // Set on the Server
+   GiveStartupAbilites();
+}
+
+void APlayerCharacter::OnRep_PlayerState()
+{
+    Super::OnRep_PlayerState();
+
+    if (!IsValid(GetAbilitySystemComponent())) return;
+
+    GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this); // Set on the Client
 }
