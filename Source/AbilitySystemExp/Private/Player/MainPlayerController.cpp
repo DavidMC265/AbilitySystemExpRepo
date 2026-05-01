@@ -71,16 +71,19 @@ void AMainPlayerController::Look(const FInputActionValue& Value)
 
 void AMainPlayerController::Primary()
 {
+    UE_LOG(LogTemp, Warning, TEXT("Primary() function called from MainPlayerController"));
     ActivateAbility(MainTags::Abilities::Primary);
 }
 
 void AMainPlayerController::Secondary()
 {
+    UE_LOG(LogTemp, Warning, TEXT("Secondary() function called from MainPlayerController"));
     ActivateAbility(MainTags::Abilities::Secondary);
 }
 
 void AMainPlayerController::Tertiary()
 {
+    UE_LOG(LogTemp, Warning, TEXT("Tertiary() function called from MainPlayerController"));
     ActivateAbility(MainTags::Abilities::Tertiary);
 }
 

@@ -1,11 +1,11 @@
 #include "Player/MainPlayerState.h"
-#include "AbilitySystemComponent.h"
+#include "AbilitySystem/MainAbilitySystemComponent.h"
 
 AMainPlayerState::AMainPlayerState()
 {
     SetNetUpdateFrequency(100.f);
 
-    AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>("AbilitySystemComponent");
+    AbilitySystemComponent = CreateDefaultSubobject<UMainAbilitySystemComponent>("AbilitySystemComponent");
     AbilitySystemComponent->SetIsReplicated(true);
     AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 }
