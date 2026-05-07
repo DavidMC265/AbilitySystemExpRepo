@@ -52,7 +52,9 @@ void APlayerCharacter::PossessedBy(AController* NewController)
    if (!IsValid(GetAbilitySystemComponent()) || !HasAuthority()) return;
 
    GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this); // Set on the Server
+   OnASCInitialized.Broadcast(GetAbilitySystemComponent(), GetAttributeSet());
    GiveStartupAbilites();
+   InitializeAttributes();
 }
 
 void APlayerCharacter::OnRep_PlayerState()
@@ -62,4 +64,13 @@ void APlayerCharacter::OnRep_PlayerState()
     if (!IsValid(GetAbilitySystemComponent())) return;
 
     GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this); // Set on the Client
+    OnASCInitialized.Broadcast(GetAbilitySystemComponent(), GetAttributeSet());
+}
+
+UAttributeSet* APlayerCharacter::GetAttributeSet() const
+{
+    AMainPlayerState* MainPlayerState = Cast<AMainPlayerState>(GetPlayerState());
+    if (!IsValid(MainPlayerState)) return nullptr;
+
+    return MainPlayerState->GetAttributeSet();
 }

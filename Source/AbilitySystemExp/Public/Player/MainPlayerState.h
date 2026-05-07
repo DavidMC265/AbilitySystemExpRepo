@@ -5,6 +5,7 @@
 #include "AbilitySystemInterface.h"
 #include "MainPlayerState.generated.h"
 
+class UAttributeSet;
 class UAbilitySystemComponent;
 
 UCLASS()
@@ -16,9 +17,13 @@ public:
 	AMainPlayerState();
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Abilities")
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+
+	UPROPERTY()
+	TObjectPtr<UAttributeSet> AttributeSet;
 	
 };

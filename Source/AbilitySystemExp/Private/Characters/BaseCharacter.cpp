@@ -24,3 +24,12 @@ void ABaseCharacter::GiveStartupAbilites()
 		GetAbilitySystemComponent()->GiveAbility(AbilitySpec);
 	}
 }
+
+void ABaseCharacter::InitializeAttributes() const
+{
+	checkf(IsValid(InitializeAttributesEffect), TEXT("InitializeAttributesEffect not set."));
+
+	FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
+	FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(InitializeAttributesEffect, 1.f, ContextHandle);
+	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+}
