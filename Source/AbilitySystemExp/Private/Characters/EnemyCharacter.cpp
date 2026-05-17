@@ -26,6 +26,11 @@ void AEnemyCharacter::BeginPlay()
 
     GiveStartupAbilites();
     InitializeAttributes();
+
+    UMainAttributeSet* MainAttributeSet = Cast<UMainAttributeSet>(GetAttributeSet());
+    if (!IsValid(MainAttributeSet)) return;
+
+    GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(MainAttributeSet->GetHealthAttribute()).AddUObject(this, &ThisClass::OnHealthChanged);
 }
 
 UAbilitySystemComponent* AEnemyCharacter::GetAbilitySystemComponent() const

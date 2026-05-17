@@ -1,5 +1,9 @@
 #include "AbilitySystem/MainAttributeSet.h"
 #include "Net/UnrealNetwork.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "GameplayEffectExtension.h"
+#include "Gameplay Tags/MainTags.h"
+
 
 void UMainAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
@@ -36,6 +40,15 @@ void UMainAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldValue)
 void UMainAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
     Super::PostGameplayEffectExecute(Data);
+
+    if (Data.EvaluatedData.Attribute == GetHealthAttribute() && GetHealth() <= 0.f)
+    {
+        FGameplayEventData Payload;
+        Payload.Instigator = Data.Target.GetAvatarActor();
+
+
+        UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Data.EffectSpec.GetEffectContext().GetInstigator(), MainTags::Events::KillScored, Payload);
+    }
 
     if (!bAttributeInitialized)
     {

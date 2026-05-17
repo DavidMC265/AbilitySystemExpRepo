@@ -5,6 +5,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Player/MainPlayerState.h"
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/MainAttributeSet.h"
 
 
 APlayerCharacter::APlayerCharacter()
@@ -55,6 +56,11 @@ void APlayerCharacter::PossessedBy(AController* NewController)
    OnASCInitialized.Broadcast(GetAbilitySystemComponent(), GetAttributeSet());
    GiveStartupAbilites();
    InitializeAttributes();
+
+    UMainAttributeSet* MainAttributeSet = Cast<UMainAttributeSet>(GetAttributeSet());
+    if (!IsValid(MainAttributeSet)) return;
+    
+    GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(MainAttributeSet->GetHealthAttribute()).AddUObject(this, &ThisClass::OnHealthChanged);
 }
 
 void APlayerCharacter::OnRep_PlayerState()
@@ -65,6 +71,11 @@ void APlayerCharacter::OnRep_PlayerState()
 
     GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this); // Set on the Client
     OnASCInitialized.Broadcast(GetAbilitySystemComponent(), GetAttributeSet());
+
+    UMainAttributeSet* MainAttributeSet = Cast<UMainAttributeSet>(GetAttributeSet());
+    if (!IsValid(MainAttributeSet)) return;
+    
+    GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(MainAttributeSet->GetHealthAttribute()).AddUObject(this, &ThisClass::OnHealthChanged);
 }
 
 UAttributeSet* APlayerCharacter::GetAttributeSet() const
